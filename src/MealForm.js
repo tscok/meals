@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-import { FormField, Select, SelectOption, TextArea, TextField } from './components'
+import { Button, FormField, Select, SelectOption, TextArea, TextField } from './components'
 
 import { capitalize } from './utils'
 import { database, update } from './firebase'
@@ -71,12 +71,12 @@ const MealForm = () => {
           ))}
         </Select>
       </FormField>
-      <button type="button" onClick={handleSave}>
+      <Button onClick={handleSave} modifiers={['primary']}>
         Save
-      </button>
-      <button type="reset" onClick={handleReset}>
+      </Button>
+      <Button type="reset" onClick={handleReset} modifiers={['secondary', 'trailing']}>
         Reset
-      </button>
+      </Button>
     </Fragment>
   )
 }
