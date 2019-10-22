@@ -1,9 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import { Button, FormField, Select, SelectOption, TextArea, TextField } from './components'
+import { Button, FormField, TextArea, TextField } from './components'
 
-import { capitalize } from './utils'
+import MealTypes from './MealTypes'
+
 import { database, update } from './firebase'
+import elmo from './elmo'
 
 const defaultState = {
   title: '',
@@ -12,21 +14,10 @@ const defaultState = {
   type: '',
 }
 
+const styles = elmo({})
+
 const MealForm = () => {
   const [state, setState] = useState(defaultState)
-  const [types, setTypes] = useState([])
-
-  useEffect(() => {
-    if (types.length === 0) {
-      getTypes()
-    }
-  }, [types])
-
-  const getTypes = async () => {
-    const snap = await database('type').once('value')
-    const list = snap.exists() ? Object.keys(snap.val()) : []
-    setTypes(list)
-  }
 
   const handleInput = key => value => {
     setState(props => ({ ...props, [key]: value }))
@@ -43,7 +34,7 @@ const MealForm = () => {
   }
 
   return (
-    <Fragment>
+    <div {...styles('form')}>
       {state.imageUrl && (
         <div>
           <img
@@ -63,13 +54,7 @@ const MealForm = () => {
         <TextField onChange={handleInput('imageUrl')} value={state.imageUrl} />
       </FormField>
       <FormField label="Type">
-        <Select disabled={types.length === 0} onChange={handleInput('type')} value={state.type}>
-          {types.map(type => (
-            <SelectOption key={type} value={type}>
-              {capitalize(type)}
-            </SelectOption>
-          ))}
-        </Select>
+        <MealTypes onChange={handleInput('type')} />
       </FormField>
       <Button onClick={handleSave} modifiers={['primary']}>
         Save
@@ -77,7 +62,7 @@ const MealForm = () => {
       <Button type="reset" onClick={handleReset} modifiers={['secondary', 'trailing']}>
         Reset
       </Button>
-    </Fragment>
+    </div>
   )
 }
 
