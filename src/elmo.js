@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'glamor'
 
-const parseArrayItem = obj => {
+function parseArrayItem(obj) {
   if (Array.isArray(obj)) {
     return obj.filter(Boolean)
   }
@@ -11,7 +11,7 @@ const parseArrayItem = obj => {
     .map(([key, val]) => (typeof val === 'boolean' ? key : val))
 }
 
-const parseModifiers = array => {
+function parseModifiers(array) {
   const reduceArray = (acc, item) => {
     const modifier = item ? parseArrayItem(item) : []
     return [...acc, ...modifier]
@@ -20,7 +20,7 @@ const parseModifiers = array => {
   return array.reduce(reduceArray, [])
 }
 
-const parseParams = params => {
+function parseParams(params) {
   const hasElement = params.length > 0 && typeof params[0] === 'string'
 
   return hasElement
@@ -28,7 +28,7 @@ const parseParams = params => {
     : { element: null, modifiers: parseModifiers(params) }
 }
 
-const getClassNames = params => {
+function getClassNames(params) {
   const { element, modifiers } = parseParams(params)
   const base = element === null ? 'elmo' : `elmo__${element}`
   const additional = modifiers.map(modifier => `elmo--${modifier}`)
@@ -36,7 +36,7 @@ const getClassNames = params => {
   return [base, ...additional].join(' ')
 }
 
-const getElementStyles = (styles, params) => {
+function getElementStyles(styles, params) {
   const { element, modifiers } = parseParams(params)
   const elementStyle = styles[element] || styles
 
