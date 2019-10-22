@@ -47,6 +47,9 @@ const styles = {
   },
   modifiers: {
     ...variants,
+    iconOnly: {
+      padding: 0,
+    },
     trailing: {
       marginLeft: '10px',
     },
